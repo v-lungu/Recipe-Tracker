@@ -25,7 +25,7 @@ public class Stock {
      * MODIFIES: this
      * EFFECTS: If the name of an ingredient matches the requested removal, removes the ingredient from the list
      */
-    public boolean removeFromStock(String name) {
+    public void removeFromStock(String name) {
         boolean checkIfFound = false;
 
         for (Ingredient i : stockList) {
@@ -39,8 +39,6 @@ public class Stock {
         if (!checkIfFound) {
             System.out.println("The ingredient was not found in the stock list.");
         }
-
-        return checkIfFound;
     }
 
     /*
@@ -48,7 +46,7 @@ public class Stock {
      * MODIFIES: this
      * EFFECTS: If the name of an ingredient matches the input will edit the stock item with new amount and unit
      */
-    public boolean editStock(String name, int amount, String unit) {
+    public void editStock(String name, int amount, String unit) {
         boolean checkIfFound = false;
 
         for (Ingredient i : stockList) {
@@ -64,7 +62,15 @@ public class Stock {
         if (!checkIfFound) {
             System.out.println("The ingredient was not found in the stock list.");
         }
+    }
 
-        return checkIfFound;
+    /*
+     * EFFECTS: Displays all ingredients in the stock list
+     */
+    public void displayStock() {
+        for (Ingredient i : stockList) {
+            i.getIngredient();
+        }
+
     }
 }
