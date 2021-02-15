@@ -3,15 +3,39 @@ package model;
 import java.util.ArrayList;
 
 public class Recipe {
+    private String cocktail;
     private ArrayList<Ingredient> ingredientList;
     private ArrayList<String> instructions;
 
     /*
-     * EFFECTS: Creates a new recipe with a list for ingredients and a list of instructions
+     * REQUIRES: Non-empty name
+     * EFFECTS: Creates a new cocktail recipe with a list for ingredients and a list of instructions
      */
-    public Recipe() {
+    public Recipe(String name) {
+        cocktail = name;
         ingredientList = new ArrayList<>();
         instructions = new ArrayList<>();
+    }
+
+    /*
+     * EFFECTS: Return the name of the cocktail
+     */
+    public String getRecipeName() {
+        return cocktail;
+    }
+
+    /*
+     * EFFECTS: Return the list of ingredients
+     */
+    public ArrayList<Ingredient> getRecipeIngredients() {
+        return ingredientList;
+    }
+
+    /*
+     * EFFECTS: Return the list of steps
+     */
+    public ArrayList<String> getRecipeInstructions() {
+        return instructions;
     }
 
     /*
@@ -29,5 +53,22 @@ public class Recipe {
      */
     public void addInstruction(String step) {
         instructions.add(step);
+    }
+
+    /*
+     * REQUIRES: A recipe with fully formed name, ingredients, and instructions
+     * EFFECTS: Displays the recipe formatted for reading
+     */
+    public void displayRecipe() {
+        System.out.println(cocktail);
+        System.out.println("Ingredients");
+        for (Ingredient i : ingredientList) {
+            i.getIngredient();
+        }
+        int step = 1;
+        for (String i : instructions) {
+            System.out.println(step + ". " + i);
+            step++;
+        }
     }
 }

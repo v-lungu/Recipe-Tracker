@@ -7,7 +7,7 @@ public class Ingredient {
     private int ingredientAmount;
 
     /*
-     * REQUIRES: name not empty, valid unit of measurement for unit, and positive amount
+     * REQUIRES: name not empty, valid unit of measurement for unit (g, mL, or part), and positive amount
      * EFFECTS: Creates an ingredient item with an amount in a specified unit of measurement
      */
     public Ingredient(String name, int amount, String unit) {
