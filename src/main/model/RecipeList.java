@@ -56,7 +56,7 @@ public class RecipeList {
                 }
             }
         }
-        if (found == false) {
+        if (!found) {
             System.out.println("Sorry, the cocktail you entered doesn't have a recipe for it yet.");
         }
     }
@@ -66,6 +66,17 @@ public class RecipeList {
      */
     public void filterRecipesByStock(Stock s) {
         ArrayList<Recipe> filtered = new ArrayList<>();
-
+        for (Recipe i : recipes) {
+            if (i.ingredientsInStock(s)) {
+                filtered.add(i);
+            }
+        }
+        if (filtered.isEmpty()) {
+            System.out.println("Sorry, you don't have ingredients to make any of the cocktails in our list.");
+        } else {
+            for (Recipe i : filtered) {
+                i.displayRecipe();
+            }
+        }
     }
 }

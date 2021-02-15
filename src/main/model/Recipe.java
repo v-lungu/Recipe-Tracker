@@ -71,4 +71,18 @@ public class Recipe {
             step++;
         }
     }
+
+    /*
+     * EFFECTS: Returns true if all ingredients used in the cocktail are found in the stock
+     */
+    public Boolean ingredientsInStock(Stock s) {
+        boolean found = false;
+        for (Ingredient i : ingredientList) {
+            found = i.inStock(s);
+            if (!found) {
+                break;
+            }
+        }
+        return found;
+    }
 }

@@ -14,6 +14,14 @@ public class Stock {
     }
 
     /*
+     * EFFECTS: returns the list of ingredients in the stock
+     */
+    public ArrayList<Ingredient> getStock() {
+        return stockList;
+    }
+
+
+    /*
      * MODIFIES: this
      * EFFECTS: Adds a new ingredient to the stock list
      */

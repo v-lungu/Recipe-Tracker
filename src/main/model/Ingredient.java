@@ -53,4 +53,20 @@ public class Ingredient {
         ingredientUnit = unit;
         ingredientAmount = amount;
     }
+
+    /*
+     * EFFECTS: Returns true if the ingredient is found within the stock
+     */
+    public boolean inStock(Stock s) {
+        boolean found = false;
+        for (Ingredient i : s.getStock()) {
+            if (ingredientName.equals(i.getName())) {
+                if (ingredientAmount >= i.getAmount()) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        return found;
+    }
 }

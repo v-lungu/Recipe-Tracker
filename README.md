@@ -38,6 +38,7 @@ chance for me to play with some fun features to fill out the functionality.
 ### Part 1: 
 - I want to be able to add new drink recipes
 - I want to view all my recipes with a few basic filters
+- I want to be able to see a recipe in detail
 - I want to be able to edit my recipes
 - I want to be able to see an inventory of all ingredients I have at home
 - I want to be able to edit my home inventory 
