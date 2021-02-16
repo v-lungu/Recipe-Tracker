@@ -72,6 +72,20 @@ public class Recipe {
         }
     }
 
+    public void removeIngredient(String name) {
+        Boolean found = false;
+
+        for (Ingredient i : ingredientList) {
+            if (name.equals(i.getName())) {
+                ingredientList.remove(i);
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("That ingredient was not found, please try again.");
+        }
+    }
+
     /*
      * EFFECTS: Returns true if all ingredients used in the cocktail are found in the stock
      */
