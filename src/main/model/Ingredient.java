@@ -38,10 +38,10 @@ public class Ingredient {
     }
 
     /*
-     * EFFECTS: Displays the ingredient in a printed out line
+     * EFFECTS: Returns a String of the amount, unit, and name of the ingredient
      */
-    public void getIngredient() {
-        System.out.println(ingredientAmount + ingredientUnit + "   " + ingredientName);
+    public String getIngredient() {
+        return ingredientAmount + ingredientUnit + "   " + ingredientName;
     }
 
     /*
@@ -61,7 +61,7 @@ public class Ingredient {
         boolean found = false;
         for (Ingredient i : s.getStock()) {
             if (ingredientName.equals(i.getName())) {
-                if (ingredientAmount >= i.getAmount()) {
+                if (ingredientAmount <= i.getAmount()) {
                     found = true;
                     break;
                 }

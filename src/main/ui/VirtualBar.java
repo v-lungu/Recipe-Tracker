@@ -194,7 +194,7 @@ public class VirtualBar {
             if (command.equals("i")) {
                 editIngredients(x);
             } else if (command.equals("s")) {
-                System.out.println("Please rewrite the steps.");
+                System.out.println("Please specify which step you would like to change: ");
                 addInstructions(x);
             }
         }
@@ -208,23 +208,24 @@ public class VirtualBar {
         int amount;
         String unit;
 
+        System.out.println("Would you like to edit or remove an ingredient? (e/r)");
+        command = input.next();
+
         System.out.println("What is the name of the ingredient you are changing?");
         name = input.next();
 
-        for (Ingredient i : x.getRecipeIngredients()) {
-            if (name.equals(i.getName())) {
-                System.out.println("Would you like to edit or remove this ingredient? (e/r)");
-                command = input.next();
-                if (command.equals("e")) {
-                    System.out.println("What is the new amount and unit of this ingredient?");
-                    amount = Integer.parseInt(input.next());
-                    unit = input.next();
-                    i.editIngredient(amount, unit);
-                } else {
-                    x.removeIngredient(name);
-                }
-            }
+        if (command.equals("e")) {
+            System.out.println("What is the new amount and unit of this ingredient?");
+            amount = Integer.parseInt(input.next());
+            unit = input.next();
+            x.editIngredient(name, amount, unit);
+        } else if (command.equals("r")) {
+            x.removeIngredient(name);
+        } else {
+            System.out.println("Please enter a valid input");
+            editIngredients(x);
         }
+
         runRecipe();
     }
 
@@ -313,10 +314,10 @@ public class VirtualBar {
             command = input.next();
 
             if (command.equals("y")) {
-                System.out.println("What is the ingredient, unit of measurement (g/ml) and amount (positive integer)?");
+                System.out.println("What is the ingredient, amount (positive integer), and unit of measurement?");
                 ingredient = input.next();
-                unit = input.next();
                 amount = Integer.parseInt(input.next());
+                unit = input.next();
                 x = new Ingredient(ingredient, amount, unit);
                 stock.addToStock(x);
             } else {
@@ -347,6 +348,7 @@ public class VirtualBar {
                     i.editIngredient(amount, unit);
                 } else {
                     stock.removeFromStock(name);
+                    break;
                 }
             }
         }

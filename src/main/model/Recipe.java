@@ -60,18 +60,24 @@ public class Recipe {
      * EFFECTS: Displays the recipe formatted for reading
      */
     public void displayRecipe() {
+        int step = 1;
+
         System.out.println(cocktail);
         System.out.println("Ingredients");
         for (Ingredient i : ingredientList) {
-            i.getIngredient();
+            System.out.println(i.getIngredient());
         }
-        int step = 1;
+
         for (String i : instructions) {
             System.out.println(step + ". " + i);
             step++;
         }
     }
 
+    /*
+     * MODIFIES: this
+     * EFFECTS: If found, deleted the specified ingredient from the recipe
+     */
     public void removeIngredient(String name) {
         Boolean found = false;
 
@@ -79,10 +85,42 @@ public class Recipe {
             if (name.equals(i.getName())) {
                 ingredientList.remove(i);
                 found = true;
+                break;
             }
         }
         if (!found) {
             System.out.println("That ingredient was not found, please try again.");
+        }
+    }
+
+    /*
+     * MODIFIES: this
+     * EFFECTS: If found, edits the specified ingredient with the new request
+     */
+    public void editIngredient(String name, int amount, String unit) {
+        Boolean found = false;
+
+        for (Ingredient i : ingredientList) {
+            if (name.equals(i.getName())) {
+                i.editIngredient(amount, unit);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            System.out.println("That ingredient was not found, please try again.");
+        }
+    }
+
+    /*
+     * MODIFIES: this
+     * EFFECTS: If found, edits the specified step with the new request
+     */
+    public void editStep(int step, String instruction) {
+        if (step - 1 > instructions.size()) {
+            System.out.println("That step specified does not exist, please try again.");
+        } else {
+            instructions.set(step - 1, instruction);
         }
     }
 

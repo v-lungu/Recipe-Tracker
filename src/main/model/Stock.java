@@ -20,7 +20,6 @@ public class Stock {
         return stockList;
     }
 
-
     /*
      * MODIFIES: this
      * EFFECTS: Adds a new ingredient to the stock list
@@ -41,6 +40,7 @@ public class Stock {
                 stockList.remove(i);
                 checkIfFound = true;
                 System.out.println("The ingredient has been removed from the stock list.");
+                break;
             }
         }
 
@@ -59,7 +59,6 @@ public class Stock {
 
         for (Ingredient i : stockList) {
             if (i.getName().equals(name)) {
-                stockList.remove(i);
                 checkIfFound = true;
                 i.editIngredient(amount, unit);
                 System.out.println("The ingredient has been properly changed to:");
@@ -77,8 +76,7 @@ public class Stock {
      */
     public void displayStock() {
         for (Ingredient i : stockList) {
-            i.getIngredient();
+            System.out.println(i.getIngredient());
         }
-
     }
 }
