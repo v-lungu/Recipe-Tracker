@@ -11,6 +11,7 @@ public class VirtualBar {
     private RecipeList recipes;
     private Stock stock;
     private Scanner input;
+    private Scanner inputLine;
 
     // EFFECTS: runs the Virtual Bar application
     public VirtualBar() {
@@ -58,6 +59,7 @@ public class VirtualBar {
         recipes = new RecipeList();
         stock = new Stock();
         input = new Scanner(System.in);
+        inputLine = new Scanner(System.in);
     }
 
     // EFFECTS: displays menu of options to user
@@ -117,11 +119,13 @@ public class VirtualBar {
         System.out.println("\tb -> back");
     }
 
+    // MODIFIES: this
+    // EFFECTS: Adds a recipe to the list
     private void addRecipe() {
         String name;
 
         System.out.println("What is the name of the cocktail?");
-        name = input.next();
+        name = inputLine.nextLine();
         Recipe add = new Recipe(name);
 
         addIngredients(add);
@@ -132,6 +136,8 @@ public class VirtualBar {
         runRecipe();
     }
 
+    // MODIFIES: this
+    // EFFECTS: Adds an ingredient to the specified recipe
     private void addIngredients(Recipe add) {
         boolean addIngredient = true;
         String command;
@@ -141,10 +147,10 @@ public class VirtualBar {
             command = input.next();
 
             if (command.equals("y")) {
-                System.out.println("What is the ingredient, unit of measurement (g/ml) and amount (positive integer)?");
-                String ingredient = input.next();
-                String unit = input.next();
+                System.out.println("What is the ingredient, and amount (positive integer) unit of measurement (g/ml)?");
+                String ingredient = inputLine.nextLine();
                 int amount = Integer.parseInt(input.next());
+                String unit = input.next();
                 Ingredient x = new Ingredient(ingredient, amount, unit);
                 add.addIngredient(x);
             } else if (command.equals("n")) {
@@ -156,6 +162,8 @@ public class VirtualBar {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: Adds an instruction to the specified recipe
     private void addInstructions(Recipe add) {
         boolean addInstruction = true;
         String command;
@@ -167,40 +175,44 @@ public class VirtualBar {
 
             if (command.equals("y")) {
                 System.out.println("Please type out the step: ");
-                step = input.next();
+                step = inputLine.nextLine();
                 add.addInstruction(step);
             } else if (command.equals("n")) {
                 addInstruction = false;
             } else {
                 System.out.println("Please enter a valid input");
-                addInstructions(add);
             }
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: Finds the specified recipe and allows the user to edit the ingredients and instructions
     private void editRecipe() {
         String command;
-        Recipe x;
+        Recipe toBeChanged;
 
         System.out.println("What is the name of the recipe you'd like to edit?");
-        command = input.next();
+        command = inputLine.nextLine();
 
-        x = recipes.findRecipe(command);
-        if (x.equals(null)) {
-            runBar();
-        } else {
+        if (recipes.findRecipe(command)) {
+            toBeChanged = recipes.getRecipe(command);
             System.out.println("What would you like to edit: i = ingredients, s = instructions");
             command = input.next();
             if (command.equals("i")) {
-                editIngredients(x);
+                editIngredients(toBeChanged);
             } else if (command.equals("s")) {
                 System.out.println("Please specify which step you would like to change: ");
-                addInstructions(x);
+                editInstructions(toBeChanged);
+            } else {
+                System.out.println("Please enter a valid input:");
+                editRecipe();
             }
         }
         runRecipe();
     }
 
+    // MODIFIES: this
+    // EFFECTS: Allows the user to add an ingredient or edit existing ingredients
     private void editIngredients(Recipe x) {
         String name;
         String command;
@@ -212,7 +224,7 @@ public class VirtualBar {
         command = input.next();
 
         System.out.println("What is the name of the ingredient you are changing?");
-        name = input.next();
+        name = inputLine.nextLine();
 
         if (command.equals("e")) {
             System.out.println("What is the new amount and unit of this ingredient?");
@@ -229,34 +241,93 @@ public class VirtualBar {
         runRecipe();
     }
 
+    // MODIFIES: this
+    // EFFECTS: Allows the user to edit the instructions
+    private void editInstructions(Recipe x) {
+        int step = 0;
+        String change;
+        boolean done = false;
+
+        System.out.println("Please specify which step of the recipe you'd like to change: ");
+        while (!done) {
+            try {
+                step = Integer.parseInt(input.next());
+                done = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a number.");
+                editInstructions(x);
+            }
+        }
+        System.out.println("What would you like the new instruction to be?");
+        change = inputLine.nextLine();
+
+        x.editStep(step, change);
+        runRecipe();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: Allows the user to remove a recipe from the list
     private void removeRecipe() {
         String name;
 
         System.out.println("What is the name of the recipe you would like to remove?");
-        name = input.next();
+        name = inputLine.nextLine();
         recipes.removeRecipe(name);
 
         runBar();
     }
 
+    // MODIFIES: this
+    // EFFECTS: Allows the user to view the list of recipes
     private void viewRecipeList() {
-        recipes.viewRecipeNames();
-        runBar();
+        if (recipes.getRecipes().isEmpty()) {
+            System.out.println("You do not currently have any drinks on the menu.");
+        } else {
+            for (Recipe i : recipes.getRecipes()) {
+                System.out.println(i.getRecipeName());
+            }
+        }
+        runRecipe();
     }
 
+    // MODIFIES: this
+    // EFFECTS: Shows list of recipes filtered by what is currently stocked
     private void filterByStock() {
-        recipes.filterRecipesByStock(stock);
+        RecipeList filtered = recipes.filterRecipesByStock(stock);
+
+        if (filtered.getRecipes().isEmpty()) {
+            System.out.println("You do not currently have any drinks on the menu.");
+        } else {
+            for (Recipe i : filtered.getRecipes()) {
+                System.out.println(i.getRecipeName());
+            }
+        }
     }
 
+    // MODIFIES: this
+    // EFFECTS: Shows the details of the specified recipe
     private void viewRecipe() {
         String name;
+        int step = 1;
+        Recipe display;
 
         System.out.println("What is the name of the cocktail you'd like to see?");
-        name = input.next();
+        name = inputLine.nextLine();
 
-        recipes.recipeDetails(name);
+        if (recipes.findRecipe(name)) {
+            display = recipes.getRecipe(name);
 
-        runRecipe();
+            System.out.println(display.getRecipeName());
+            System.out.println("Ingredients");
+            for (Ingredient i : display.getRecipeIngredients()) {
+                System.out.println(i.getIngredient());
+            }
+
+            for (String i : display.getRecipeInstructions()) {
+                System.out.println(step + ". " + i);
+                step++;
+            }
+        }
     }
 
     // MODIFIES: this
@@ -299,6 +370,8 @@ public class VirtualBar {
         System.out.println("\tb -> back");
     }
 
+    // MODIFIES: this
+    // EFFECTS: Adds to the stock
     private void addStock() {
         boolean addIngredient = true;
         String command;
@@ -315,7 +388,7 @@ public class VirtualBar {
 
             if (command.equals("y")) {
                 System.out.println("What is the ingredient, amount (positive integer), and unit of measurement?");
-                ingredient = input.next();
+                ingredient = inputLine.nextLine();
                 amount = Integer.parseInt(input.next());
                 unit = input.next();
                 x = new Ingredient(ingredient, amount, unit);
@@ -327,6 +400,8 @@ public class VirtualBar {
         runStock();
     }
 
+    // MODIFIES: this
+    // EFFECTS: Allows editing of the existing stock
     private void editStock() {
         String name;
         String command;
@@ -335,7 +410,7 @@ public class VirtualBar {
         String unit;
 
         System.out.println("What is the name of the ingredient you are changing?");
-        name = input.next();
+        name = inputLine.nextLine();
 
         for (Ingredient i : stock.getStock()) {
             if (name.equals(i.getName())) {
@@ -355,8 +430,12 @@ public class VirtualBar {
         runStock();
     }
 
+    // MODIFIES: this
+    // EFFECTS: Displays a list of the entire stock
     private void viewStock() {
-        stock.displayStock();
+        for (Ingredient i : stock.getStock()) {
+            System.out.println(i.getIngredient());
+        }
         runStock();
     }
 }

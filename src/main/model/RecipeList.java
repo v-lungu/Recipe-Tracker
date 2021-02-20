@@ -29,91 +29,65 @@ public class RecipeList {
     }
 
     /*
-     * MODIFIES: this
-     * EFFECTS: Removes the specified recipe from the list
+     * EFFECTS: Returns true if a specified recipe is found in the list
      */
-    public void removeRecipe(String name) {
-        Boolean found = false;
+    public boolean findRecipe(String name) {
 
-        for (Recipe i : recipes) {
-            if (name.equals(i.getRecipeName())) {
-                recipes.remove(i);
-                found = true;
-            }
-        }
-        if (!found) {
-            System.out.println("The specified recipe was not found.");
-        }
-    }
-
-    /*
-     * EFFECTS: Displays the name of all the recipes and a unique message if there are no recipes in the list
-     */
-    public void viewRecipeNames() {
         if (recipes.isEmpty()) {
             System.out.println("You do not currently have any drinks on the menu.");
-        } else {
-            for (Recipe i : recipes) {
-                System.out.println(i.getRecipeName());
-            }
-        }
-    }
-
-    /*
-     * EFFECTS: Displays the full recipe that matches the name of the search term entered
-     */
-    public void recipeDetails(String name) {
-        boolean found = false;
-        if (recipes.isEmpty()) {
-            System.out.println("You do not currently have any drinks on the menu.");
+            return false;
         } else {
             for (Recipe i : recipes) {
                 if (i.getRecipeName().equals(name)) {
-                    i.displayRecipe();
-                    found = true;
-                }
-            }
-        }
-        if (!found) {
-            System.out.println("Sorry, the cocktail you entered doesn't have a recipe for it yet.");
-        }
-    }
-
-    /*
-     * EFFECTS: Finds and returns a specific recipe, and null if not found
-     */
-    public Recipe findRecipe(String name) {
-        boolean found = false;
-
-        if (recipes.isEmpty()) {
-            System.out.println("You do not currently have any drinks on the menu.");
-        } else {
-            for (Recipe i : recipes) {
-                if (i.getRecipeName().equals(name)) {
-                    return i;
+                    return true;
                 }
             }
         }
         System.out.println("Sorry, the cocktail you entered doesn't have a recipe for it yet.");
-        return null;
+        return false;
+    }
+
+    /*
+     * REQUIRES: The recipe exists in the list
+     * EFFECTS: Returns the specified recipe
+     */
+    public Recipe getRecipe(String name) {
+        Recipe toBeReturned = null;
+
+        for (Recipe i : recipes) {
+            if (i.getRecipeName().equals(name)) {
+                toBeReturned = i;
+            }
+        }
+        return toBeReturned;
+    }
+
+    /*
+     * MODIFIES: this
+     * EFFECTS: Removes the specified recipe from the list
+     */
+    public void removeRecipe(String name) {
+        if (findRecipe(name)) {
+            for (Recipe i : recipes) {
+                if (name.equals(i.getRecipeName())) {
+                    recipes.remove(i);
+                }
+            }
+        } else {
+            System.out.println("Sorry, your recipe was not found.");
+        }
     }
 
     /*
      * EFFECTS: Displays the name of all recipes that can be made with your current stock
      */
-    public void filterRecipesByStock(Stock s) {
-        ArrayList<Recipe> filtered = new ArrayList<>();
+    public RecipeList filterRecipesByStock(Stock s) {
+        RecipeList filtered = new RecipeList();
         for (Recipe i : recipes) {
             if (i.ingredientsInStock(s)) {
-                filtered.add(i);
+                filtered.addRecipe(i);
             }
         }
-        if (filtered.isEmpty()) {
-            System.out.println("Sorry, you don't have ingredients to make any of the cocktails in our list.");
-        } else {
-            for (Recipe i : filtered) {
-                System.out.println(i.getRecipeName());
-            }
-        }
+        return filtered;
     }
 }

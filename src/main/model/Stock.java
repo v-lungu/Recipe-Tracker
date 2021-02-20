@@ -24,8 +24,21 @@ public class Stock {
      * MODIFIES: this
      * EFFECTS: Adds a new ingredient to the stock list
      */
-    public void addToStock(Ingredient i) {
-        stockList.add(i);
+    public void addToStock(Ingredient x) {
+        boolean alreadyIn = false;
+        Ingredient addTo = null;
+
+        for (Ingredient i : stockList) {
+            if (i.getName().equals(x.getName())) {
+                alreadyIn = true;
+                addTo = i;
+            }
+        }
+        if (alreadyIn) {
+            addTo.editIngredient(addTo.getAmount() + x.getAmount(), addTo.getUnit());
+        } else {
+            stockList.add(x);
+        }
     }
 
     /*
@@ -68,15 +81,6 @@ public class Stock {
 
         if (!checkIfFound) {
             System.out.println("The ingredient was not found in the stock list.");
-        }
-    }
-
-    /*
-     * EFFECTS: Displays all ingredients in the stock list
-     */
-    public void displayStock() {
-        for (Ingredient i : stockList) {
-            System.out.println(i.getIngredient());
         }
     }
 }

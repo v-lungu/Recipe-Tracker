@@ -56,25 +56,6 @@ public class Recipe {
     }
 
     /*
-     * REQUIRES: A recipe with fully formed name, ingredients, and instructions
-     * EFFECTS: Displays the recipe formatted for reading
-     */
-    public void displayRecipe() {
-        int step = 1;
-
-        System.out.println(cocktail);
-        System.out.println("Ingredients");
-        for (Ingredient i : ingredientList) {
-            System.out.println(i.getIngredient());
-        }
-
-        for (String i : instructions) {
-            System.out.println(step + ". " + i);
-            step++;
-        }
-    }
-
-    /*
      * MODIFIES: this
      * EFFECTS: If found, deleted the specified ingredient from the recipe
      */

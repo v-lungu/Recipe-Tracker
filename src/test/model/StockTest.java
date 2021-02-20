@@ -37,6 +37,17 @@ public class StockTest {
     }
 
     @Test
+    void testAddToStockRepeat() {
+        assertEquals(0, testStock.getStock().size());
+        testStock.addToStock(testIA);
+        testStock.addToStock(testIB);
+        testStock.addToStock(testIC);
+        testStock.addToStock(testIA);
+        assertEquals(3, testStock.getStock().size());
+        assertEquals(10, testStock.getStock().get(0).getAmount());
+    }
+
+    @Test
     void testRemoveFound() {
         assertEquals(0, testStock.getStock().size());
         testStock.addToStock(testIA);
