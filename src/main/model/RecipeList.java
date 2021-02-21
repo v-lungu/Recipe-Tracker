@@ -71,6 +71,7 @@ public class RecipeList {
             for (Recipe i : recipes) {
                 if (name.equals(i.getRecipeName())) {
                     recipes.remove(i);
+                    break;
                 }
             }
         } else {

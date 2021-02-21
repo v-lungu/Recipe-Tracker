@@ -147,7 +147,7 @@ public class VirtualBar {
             command = input.next();
 
             if (command.equals("y")) {
-                System.out.println("What is the ingredient, and amount (positive integer) unit of measurement (g/ml)?");
+                System.out.println("What is the ingredient, amount (positive integer) and unit of measurement (g/ml)?");
                 String ingredient = inputLine.nextLine();
                 int amount = Integer.parseInt(input.next());
                 String unit = input.next();
@@ -201,7 +201,6 @@ public class VirtualBar {
             if (command.equals("i")) {
                 editIngredients(toBeChanged);
             } else if (command.equals("s")) {
-                System.out.println("Please specify which step you would like to change: ");
                 editInstructions(toBeChanged);
             } else {
                 System.out.println("Please enter a valid input:");
@@ -260,8 +259,9 @@ public class VirtualBar {
         }
         System.out.println("What would you like the new instruction to be?");
         change = inputLine.nextLine();
-
         x.editStep(step, change);
+        System.out.println("The edit has been made.");
+
         runRecipe();
     }
 
@@ -323,11 +323,13 @@ public class VirtualBar {
                 System.out.println(i.getIngredient());
             }
 
+            System.out.println('\n' + "Instructions");
             for (String i : display.getRecipeInstructions()) {
                 System.out.println(step + ". " + i);
                 step++;
             }
         }
+        runRecipe();
     }
 
     // MODIFIES: this
@@ -376,10 +378,6 @@ public class VirtualBar {
         boolean addIngredient = true;
         String command;
 
-        String ingredient;
-        String unit;
-        int amount;
-
         Ingredient x;
 
         while (addIngredient) {
@@ -388,13 +386,16 @@ public class VirtualBar {
 
             if (command.equals("y")) {
                 System.out.println("What is the ingredient, amount (positive integer), and unit of measurement?");
-                ingredient = inputLine.nextLine();
-                amount = Integer.parseInt(input.next());
-                unit = input.next();
+                String ingredient = inputLine.nextLine();
+                int amount = Integer.parseInt(input.next());
+                String unit = input.next();
                 x = new Ingredient(ingredient, amount, unit);
                 stock.addToStock(x);
-            } else {
+            } else if (command.equals("n")) {
                 addIngredient = false;
+            } else {
+                System.out.println("Please enter a valid input");
+                addStock();
             }
         }
         runStock();
@@ -403,14 +404,10 @@ public class VirtualBar {
     // MODIFIES: this
     // EFFECTS: Allows editing of the existing stock
     private void editStock() {
-        String name;
         String command;
 
-        int amount;
-        String unit;
-
         System.out.println("What is the name of the ingredient you are changing?");
-        name = inputLine.nextLine();
+        String name = inputLine.nextLine();
 
         for (Ingredient i : stock.getStock()) {
             if (name.equals(i.getName())) {
@@ -418,12 +415,15 @@ public class VirtualBar {
                 command = input.next();
                 if (command.equals("e")) {
                     System.out.println("What is the new amount and unit of this ingredient?");
-                    amount = Integer.parseInt(input.next());
-                    unit = input.next();
+                    int amount = Integer.parseInt(input.next());
+                    String unit = input.next();
                     i.editIngredient(amount, unit);
-                } else {
+                } else if (command.equals("r")) {
                     stock.removeFromStock(name);
                     break;
+                } else {
+                    System.out.println("That was not a valid input, please try again.");
+                    editStock();
                 }
             }
         }
@@ -433,6 +433,7 @@ public class VirtualBar {
     // MODIFIES: this
     // EFFECTS: Displays a list of the entire stock
     private void viewStock() {
+        System.out.println("Ingredients: ");
         for (Ingredient i : stock.getStock()) {
             System.out.println(i.getIngredient());
         }
