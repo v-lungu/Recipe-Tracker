@@ -49,7 +49,6 @@ public class VirtualBar {
             runRecipe();
         } else {
             System.out.println("Selection not valid, please try again.");
-            runBar();
         }
     }
 
@@ -80,7 +79,7 @@ public class VirtualBar {
         command = command.toLowerCase();
 
         if (command.equals("b")) {
-            runBar();
+            System.out.println(" ");
         } else {
             processRecipeCommand(command);
         }
@@ -274,7 +273,7 @@ public class VirtualBar {
         name = inputLine.nextLine();
         recipes.removeRecipe(name);
 
-        runBar();
+        runRecipe();
     }
 
     // MODIFIES: this
@@ -342,7 +341,7 @@ public class VirtualBar {
         command = command.toLowerCase();
 
         if (command.equals("b")) {
-            runBar();
+            System.out.println(" ");
         } else {
             processStockCommand(command);
         }
