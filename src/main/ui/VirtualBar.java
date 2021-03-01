@@ -7,6 +7,8 @@ import model.Ingredient;
 
 import java.util.Scanner;
 
+// Creates and runs a virtual bar
+// Uses modified code from the AccountNotRobust sample given on edx
 public class VirtualBar {
     private RecipeList recipes;
     private Stock stock;

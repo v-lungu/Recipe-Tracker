@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+// Represents a recipe with ingredients and a list of steps
 public class Recipe {
     private String cocktail;
     private ArrayList<Ingredient> ingredientList;

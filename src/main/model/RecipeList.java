@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+// Represents a list of recipes
 public class RecipeList {
     private ArrayList<Recipe> recipes;
 

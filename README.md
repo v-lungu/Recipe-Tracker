@@ -31,3 +31,7 @@ course.
 - I want to be able to edit my recipes
 - I want to be able to see an inventory of all ingredients I have at home
 - I want to be able to edit my home inventory 
+
+### Part 2:
+- I want to be able to save my recipes and stock
+- I want to be able to load my recipes and stock from file 
