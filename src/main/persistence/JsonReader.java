@@ -13,6 +13,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+// Represents a reader that reads RecipeList and Stock data from JSON data stored in file
+// Repurposed from example given on edx
 public class JsonReader {
     private String source;
 
@@ -63,7 +65,7 @@ public class JsonReader {
     }
 
     // MODIFIES: rl
-    // EFFECTS: parses recipes from JSON object and adds them to workroom
+    // EFFECTS: parses recipes from JSON object and adds them to RecipeList
     private void addRecipes(RecipeList rl, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("recipes");
         for (Object json : jsonArray) {
@@ -73,7 +75,7 @@ public class JsonReader {
     }
 
     // MODIFIES: rl
-    // EFFECTS: parses recipe from JSON object and adds it to workroom
+    // EFFECTS: parses Recipe from JSON object and adds it to RecipeList
     private void addRecipe(RecipeList rl, JSONObject jsonObject) {
         JSONArray jsonArrayI = jsonObject.getJSONArray("recipe-ingredients");
         JSONArray jsonArrayS = jsonObject.getJSONArray("steps");
@@ -93,7 +95,7 @@ public class JsonReader {
     }
 
     // MODIFIES: rl
-    // EFFECTS: parses recipe from JSON object and adds it to workroom
+    // EFFECTS: parses ingredients from JSON object and adds it to Recipe
     private void addIngredient(Recipe r, JSONObject jsonObject) {
         String name = jsonObject.getString("ingredient");
         int amount = jsonObject.getInt("amount");
@@ -103,8 +105,8 @@ public class JsonReader {
         r.addIngredient(ingredient);
     }
 
-    // MODIFIES: rl
-    // EFFECTS: parses recipes from JSON object and adds them to workroom
+    // MODIFIES: s
+    // EFFECTS: parses Stock from JSON object and adds them to Stock
     private void addStock(Stock s, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("stock-ingredients");
         for (Object json : jsonArray) {
@@ -113,6 +115,8 @@ public class JsonReader {
         }
     }
 
+    // MODIFIES: rl
+    // EFFECTS: parses ingredients from JSON object and adds it to Stock
     private void addIngredientStock(Stock s, JSONObject jsonObject) {
         String name = jsonObject.getString("ingredient");
         int amount = jsonObject.getInt("amount");

@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+// Represents a writer that writes JSON representation of RecipeList and Stock to file
+// Repurposed from example given on edx
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
@@ -26,7 +28,7 @@ public class JsonWriter {
     }
 
     // MODIFIES: this
-    // EFFECTS: writes JSON representation of RecipeList to file
+    // EFFECTS: writes JSON representation of RecipeList and Stock to file
     public void write(RecipeList rl, Stock s) {
         JSONObject json = new JSONObject();
         json.put("recipe-list", rl.toJson());
