@@ -4,16 +4,23 @@ import model.Recipe;
 import model.RecipeList;
 import model.Stock;
 import model.Ingredient;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 // Creates and runs a virtual bar
 // Uses modified code from the AccountNotRobust sample given on edx
 public class VirtualBar {
+    private static final String JSON_STORE = "./data/bar.json";
     private RecipeList recipes;
     private Stock stock;
     private Scanner input;
     private Scanner inputLine;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: runs the Virtual Bar application
     public VirtualBar() {
@@ -49,6 +56,10 @@ public class VirtualBar {
             runStock();
         } else if (command.equals("r")) {
             runRecipe();
+        } else if (command.equals("c")) {
+            saveBar();
+        } else if (command.equals("l")) {
+            loadBar();
         } else {
             System.out.println("Selection not valid, please try again.");
         }
@@ -61,6 +72,8 @@ public class VirtualBar {
         stock = new Stock();
         input = new Scanner(System.in);
         inputLine = new Scanner(System.in);
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
     }
 
     // EFFECTS: displays menu of options to user
@@ -68,6 +81,8 @@ public class VirtualBar {
         System.out.println("\nSelect from:");
         System.out.println("\tr -> recipes");
         System.out.println("\ts -> stock");
+        System.out.println("\tc -> save");
+        System.out.println("\tl -> load");
         System.out.println("\te -> exit");
     }
 
@@ -439,6 +454,30 @@ public class VirtualBar {
             System.out.println(i.getIngredient());
         }
         runStock();
+    }
+
+    // EFFECTS: saves the workroom to file
+    private void saveBar() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(recipes, stock);
+            jsonWriter.close();
+            System.out.println("Saved to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads workroom from file
+    private void loadBar() {
+        try {
+            recipes = jsonReader.readRecipeList();
+            stock = jsonReader.readStock();
+            System.out.println("Loaded from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
     }
 }
 
