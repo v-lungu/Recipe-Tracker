@@ -1,0 +1,25 @@
+{
+  "stock": {"stock-ingredients": [
+    {
+      "amount": 15,
+      "unit": "mL",
+      "ingredient": "cherry"
+    },
+    {
+      "amount": 50,
+      "unit": "mL",
+      "ingredient": "vodka"
+    },
+    {
+      "amount": 18,
+      "unit": "g",
+      "ingredient": "ice"
+    },
+    {
+      "amount": 25,
+      "unit": "mL",
+      "ingredient": "rum"
+    }
+  ]},
+  "recipe-list": {"recipes": []}
+}

@@ -1,9 +1,13 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
 //Represents the stock of ingredients in a house at any given time
-public class Stock {
+public class Stock implements Writable {
     private ArrayList<Ingredient> stockList;
 
     /*
@@ -82,5 +86,22 @@ public class Stock {
         if (!checkIfFound) {
             System.out.println("The ingredient was not found in the stock list.");
         }
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("stock-ingredients", ingredientsToJson());
+        return json;
+    }
+
+    private JSONArray ingredientsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Ingredient i : stockList) {
+            jsonArray.put(i.toJson());
+        }
+
+        return jsonArray;
     }
 }

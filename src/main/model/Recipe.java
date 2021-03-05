@@ -1,9 +1,14 @@
 package model;
 
+import org.json.JSONObject;
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 
+import persistence.Writable;
+
 // Represents a recipe with ingredients and a list of steps
-public class Recipe {
+public class Recipe implements Writable {
     private String cocktail;
     private ArrayList<Ingredient> ingredientList;
     private ArrayList<String> instructions;
@@ -118,5 +123,34 @@ public class Recipe {
             }
         }
         return found;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", cocktail);
+        json.put("recipe-ingredients", ingredientsToJson());
+        json.put("steps", instructionsToJson());
+        return json;
+    }
+
+    private JSONArray ingredientsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Ingredient i : ingredientList) {
+            jsonArray.put(i.toJson());
+        }
+
+        return jsonArray;
+    }
+
+    private JSONArray instructionsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (String i : instructions) {
+            jsonArray.put(i);
+        }
+
+        return jsonArray;
     }
 }

@@ -1,0 +1,68 @@
+{
+  "stock": {"stock-ingredients": []},
+  "recipe-list": {"recipes": [
+    {
+      "recipe-ingredients": [
+        {
+          "amount": 15,
+          "unit": "mL",
+          "ingredient": "cherry"
+        },
+        {
+          "amount": 50,
+          "unit": "mL",
+          "ingredient": "vodka"
+        }
+      ],
+      "name": "pina colada",
+      "steps": [
+        "cat",
+        "dog"
+      ]
+    },
+    {
+      "recipe-ingredients": [{
+        "amount": 18,
+        "unit": "g",
+        "ingredient": "ice"
+      }],
+      "name": "moscow mule",
+      "steps": ["cat and dog"]
+    },
+    {
+      "recipe-ingredients": [
+        {
+          "amount": 15,
+          "unit": "mL",
+          "ingredient": "cherry"
+        },
+        {
+          "amount": 50,
+          "unit": "mL",
+          "ingredient": "vodka"
+        },
+        {
+          "amount": 18,
+          "unit": "g",
+          "ingredient": "ice"
+        },
+        {
+          "amount": 25,
+          "unit": "mL",
+          "ingredient": "rum"
+        }
+      ],
+      "name": "whiskey sour",
+      "steps": []
+    },
+    {
+      "recipe-ingredients": [],
+      "name": "bloody mary",
+      "steps": [
+        "cat",
+        "dog",
+        "pineapple"
+      ]
+    }
+  ]}
+}
