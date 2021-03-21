@@ -1,22 +1,4 @@
 {
     "stock": {"stock-ingredients": []},
-    "recipe-list": {"recipes": [{
-        "recipe-ingredients": [
-            {
-                "amount": 1,
-                "unit": "g",
-                "ingredient": "qqq"
-            },
-            {
-                "amount": 3,
-                "unit": "ml",
-                "ingredient": "www"
-            }
-        ],
-        "name": "aaa",
-        "steps": [
-            "zzz",
-            "xxx"
-        ]
-    }]}
+    "recipe-list": {"recipes": []}
 }

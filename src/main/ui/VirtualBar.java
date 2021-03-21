@@ -7,9 +7,12 @@ import model.Ingredient;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
+import java.awt.event.MouseAdapter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
+import javax.swing.*;
+import java.awt.event.MouseEvent;
 
 // Creates and runs a virtual bar
 // Uses modified code from the AccountNotRobust sample given on edx
@@ -24,9 +27,10 @@ public class VirtualBar {
 
     // EFFECTS: runs the Virtual Bar application
     public VirtualBar() {
-        init();
+        initFields();
         runBar();
     }
+
 
     // MODIFIES: this
     // EFFECTS: processes user input
@@ -67,7 +71,7 @@ public class VirtualBar {
 
     // MODIFIES: this
     // EFFECTS: initializes stock and list of recipes
-    private void init() {
+    private void initFields() {
         recipes = new RecipeList();
         stock = new Stock();
         input = new Scanner(System.in);
@@ -479,5 +483,6 @@ public class VirtualBar {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
+
 }
 
