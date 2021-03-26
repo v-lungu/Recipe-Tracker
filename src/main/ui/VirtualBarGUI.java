@@ -1,5 +1,6 @@
 package ui;
 
+import model.Recipe;
 import model.RecipeList;
 import model.Stock;
 import persistence.JsonReader;
@@ -16,7 +17,7 @@ import javax.swing.*;
 import java.util.Set;
 
 public class VirtualBarGUI extends JFrame implements ActionListener {
-    private static final String JSON_STORE = "./data/bar.json";
+    private static final String JSON_STORE = "./data/testReaderGeneralRecipeList.json";
     private RecipeList recipes;
     private Stock stock;
     private Scanner input;
@@ -24,38 +25,71 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
-    public static final int WIDTH = 1000;
-    public static final int HEIGHT = 900;
+    public static final int WIDTH = 600;
+    public static final int HEIGHT = 600;
 
-    JButton recipesButton;
-    JButton stockButton;
-    JButton saveButton;
-    JButton loadButton;
-    Set<JButton> mainMenuButtons;
+    private JButton recipesButton;
+    private JButton stockButton;
+    private JButton saveButton;
+    private JButton loadButton;
+    private Set<JButton> mainMenuButtons;
 
-    JButton addRecipeButton;
-    JButton editRecipeButton;
-    JButton removeRecipeButton;
-    JButton listRecipeButton;
-    JButton stockFilterButton;
-    JButton recipeButton;
-    JButton recipeBackButton;
-    Set<JButton> recipesButtons;
+    private JButton addRecipeButton;
+    private JButton editRecipeButton;
+    private JButton removeRecipeButton;
+    private JButton listRecipeButton;
+    private JButton stockFilterButton;
+    private JButton recipeButton;
+    private JButton recipeBackButton;
+    private Set<JButton> recipesButtons;
 
-    JButton addStockButton;
-    JButton editStockButton;
-    JButton viewStockButton;
-    JButton stockBackButton;
-    Set<JButton> stockButtons;
+    private JButton addStockButton;
+    private JButton editStockButton;
+    private JButton viewStockButton;
+    private JButton stockBackButton;
+    private Set<JButton> stockButtons;
 
-    Set<JButton> backButtons;
+    private Set<JButton> backButtons;
 
-    JPanel menuContainer;
-    JPanel contentContainer;
+    private JPanel menuContainer;
+    private JPanel contentContainer;
 
-    JPanel mainMenu;
-    JPanel recipesMenu;
-    JPanel stockMenu;
+    private JPanel mainMenu;
+    private JPanel recipesMenu;
+    private JPanel stockMenu;
+
+    private JPanel mainContent;
+
+    private JPanel addRecipe;
+    private JPanel editRecipe;
+    private JPanel removeRecipe;
+    private JPanel displayAllRecipe;
+    private JPanel displayByStock;
+    private JPanel displayRecipe;
+
+    private JPanel addStock;
+    private JPanel editStock;
+    private JPanel viewStock;
+
+    CardLayout c1;
+    CardLayout c2;
+
+    JButton addStepButton;
+    JButton addIngredientButton;
+    JButton doneRecipeButton;
+    private Set<JButton> contentButtons;
+
+    JTextField ingredientText = new JTextField(20);
+    JTextField recipeNameText;
+    JTextField amountText;
+    JTextField unitText;
+    JTextField stepText;
+
+    JLabel mainLabel;
+    JLabel viewRecipes;
+    JLabel viewRecipeTitle = new JLabel("<html> Cocktails on Menu <br/><br/> </html>");
+    JLabel viewFilteredRecipes;
+    JLabel viewFilteredTitle = new JLabel("<html> Cocktails on Menu and in Stock <br/><br/> </html>");
 
     // EFFECTS: runs the Virtual Bar application
     public VirtualBarGUI() {
@@ -74,6 +108,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         jsonReader = new JsonReader(JSON_STORE);
     }
 
+    // EFFECTS: Sets up every panel and organizes it
     private void initGraphics() {
         setLayout(new BorderLayout());
         setMinimumSize(new Dimension(WIDTH, HEIGHT));
@@ -85,28 +120,38 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         createRecipesMenu();
         createStockMenu();
 
+        createContent();
+
         createCardLayoutMenu();
+        createCardLayoutContent();
 
         groupButtons();
     }
 
+    // EFFECTS: Creates card layout for the menu
     private void createCardLayoutMenu() {
-        CardLayout c1 = new CardLayout(5,5);
+        c1 = new CardLayout(5,5);
         menuContainer = new JPanel(c1);
-        menuContainer.setPreferredSize(new Dimension(100, 700));
-        menuContainer.add(mainMenu);
-        menuContainer.add(recipesMenu);
-
-        menuContainer.add(stockMenu);
+        menuContainer.add(mainMenu, "main");
+        menuContainer.add(recipesMenu, "recipes");
+        menuContainer.add(stockMenu, "stock");
 
         add(menuContainer, BorderLayout.WEST);
 
-        contentContainer = new JPanel();
-        contentContainer.setPreferredSize(new Dimension(700, 700));
-        contentContainer.setBackground(Color.green);
+    }
+
+    private void createCardLayoutContent() {
+        c2 = new CardLayout(5,5);
+        contentContainer = new JPanel(c2);
+        contentContainer.add(mainContent, "main panel");
+        contentContainer.add(addRecipe, "add recipe");
+        contentContainer.add(displayAllRecipe, "view recipes");
+        contentContainer.add(displayByStock, "view stock recipes");
+
         add(contentContainer, BorderLayout.CENTER);
     }
 
+    // EFFECT: Groups buttons in order to create easy to navigate windows
     private void groupButtons() {
         mainMenuButtons = new HashSet<>();
         mainMenuButtons.add(recipesButton);
@@ -130,8 +175,14 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         backButtons = new HashSet<>();
         backButtons.add(recipeBackButton);
         backButtons.add(stockBackButton);
+
+        contentButtons = new HashSet<>();
+        contentButtons.add(addIngredientButton);
+        contentButtons.add(addStepButton);
+        contentButtons.add(doneRecipeButton);
     }
 
+    // EFFECTS: Creates buttons for main menu
     private void createMainMenu() {
         mainMenu = new JPanel();
         mainMenu.setLayout(new GridLayout(4,0));
@@ -154,6 +205,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         mainMenu.add(loadButton);
     }
 
+    // EFFECTS: Creates graphics for recipes menu
     private void createRecipesMenu() {
         recipesMenu = new JPanel();
         recipesMenu.setLayout(new GridLayout(7, 0));
@@ -162,6 +214,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         addRecipesMenuButtons();
     }
 
+    // EFFECTS: Creates all buttons for recipes menu
     private void addRecipesMenuButtons() {
         addRecipeButton = new JButton("Add");
         addRecipeButton.addActionListener(this);
@@ -192,6 +245,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         recipesMenu.add(recipeBackButton);
     }
 
+    // EFFECTS: Creates graphics for stock menu
     private void createStockMenu() {
         stockMenu = new JPanel();
         stockMenu.setLayout(new GridLayout(4,0));
@@ -214,27 +268,117 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         stockMenu.add(stockBackButton);
     }
 
+    private void createContent() {
+        createMainMenuContent();
+        createRecipesContent();
+        createStockContent();
+    }
+
+    private void createMainMenuContent() {
+        mainContent = new JPanel();
+        mainLabel = new JLabel("Welcome");
+        mainContent.add(mainLabel);
+    }
+
+    private void createRecipesContent() {
+        addRecipePanel();
+ //       editRecipePanel();
+   //     removeRecipePanel();
+        viewRecipesPanel();
+        viewFilteredPanel();
+        //viewRecipePanel();
+    }
+
+    private void addRecipePanel() {
+        addRecipe = new JPanel();
+
+        addIngredientsSection(true);
+
+        Label steps = new Label("Step");
+        addRecipe.add(steps);
+        stepText = new JTextField(20);
+        addRecipe.add(stepText);
+        addStepButton = new JButton("Add");
+        addStepButton.addActionListener(this);
+        addRecipe.add(addStepButton);
+
+        Label recipeName = new Label("Cocktail name:");
+        addRecipe.add(recipeName);
+        recipeNameText = new JTextField(20);
+        addRecipe.add(recipeNameText);
+        doneRecipeButton = new JButton("Add Recipe");
+        doneRecipeButton.addActionListener(this);
+        addRecipe.add(doneRecipeButton);
+
+    }
+
+    private void addIngredientsSection(boolean r) {
+        Label ingredients = new Label("Ingredient Adder");
+        addRecipe.add(ingredients);
+
+        Label ingredient = new Label("Ingredient");
+        addRecipe.add(ingredient);
+        ingredientText = new JTextField(20);
+        addRecipe.add(ingredientText);
+        Label amount = new Label("Amount");
+        addRecipe.add(amount);
+        amountText = new JTextField(50);
+        addRecipe.add(amountText);
+        Label unit = new Label("Unit");
+        addRecipe.add(unit);
+        unitText = new JTextField(30);
+        addRecipe.add(unitText);
+
+        addIngredientButton = new JButton("Add");
+        addIngredientButton.addActionListener(this);
+        addRecipe.add(addIngredientButton);
+    }
+
+    private void viewRecipesPanel() {
+        displayAllRecipe = new JPanel();
+        displayAllRecipe.setLayout(new BoxLayout(displayAllRecipe, BoxLayout.Y_AXIS));
+
+        displayAllRecipe.add(viewRecipeTitle);
+
+        viewRecipes = new JLabel();
+        displayAllRecipe.add(viewRecipes);
+    }
+
+    private void viewFilteredPanel() {
+        displayByStock = new JPanel();
+        displayByStock.setLayout(new BoxLayout(displayByStock, BoxLayout.Y_AXIS));
+
+        displayByStock.add(viewFilteredTitle);
+
+        viewFilteredRecipes = new JLabel();
+        displayByStock.add(viewFilteredRecipes);
+    }
+
+    private void createStockContent() {
+    }
+
+
+    // EFFECTS: Handles button presses and redirects to correct response
     public void actionPerformed(ActionEvent e) {
         if (backButtons.contains(e.getSource())) {
-            mainMenu.setVisible(true);
-            recipesMenu.setVisible(false);
-            stockMenu.setVisible(false);
+            c1.show(menuContainer, "main");
+            c2.show(contentContainer, "main panel");
+            mainLabel.setText("Main Menu");
         } else if (mainMenuButtons.contains(e.getSource())) {
             runBar(e);
         } else if (recipesButtons.contains(e.getSource())) {
-            runRecipes(e);
+            runRecipesMenu(e);
         } else if (stockButtons.contains(e.getSource())) {
-            runStock(e);
+            runStockMenu(e);
         }
     }
 
+    // EFFECTS: Handles main menu button presses
     private void runBar(ActionEvent e) {
         if (e.getSource() == recipesButton) {
-            mainMenu.setVisible(false);
-            recipesMenu.setVisible(true);
+            c1.show(menuContainer, "recipes");
         } else if (e.getSource() == stockButton) {
-            mainMenu.setVisible(false);
-            stockMenu.setVisible(true);
+            c1.show(menuContainer, "stock");
         } else if (e.getSource() == saveButton) {
             saveBar();
         } else if (e.getSource() == loadButton) {
@@ -252,6 +396,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE);
         }
+        mainLabel.setText("Content saved");
     }
 
     // MODIFIES: this
@@ -264,12 +409,47 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
+        mainLabel.setText("Content loaded");
     }
 
-    private void runRecipes(ActionEvent e) {
+    private void runRecipesMenu(ActionEvent e) {
+        if (e.getSource() == addRecipeButton) {
+            c2.show(contentContainer, "add recipe");
+        } else if (e.getSource() == listRecipeButton) {
+            updateRecipeList();
+            c2.show(contentContainer, "view recipes");
+        } else if (e.getSource() == stockFilterButton) {
+            updateRecipesStockList();
+            c2.show(contentContainer, "view stock recipes");
+        }
     }
 
-    private void runStock(ActionEvent e) {
+    private void updateRecipeList() {
+        StringBuilder result = new StringBuilder();
+
+        result.append("<html>");
+        for (Recipe i : recipes.getRecipes()) {
+            result.append(i.getRecipeName() + " <br/> ");
+        }
+        result.append("</html>");
+
+        viewRecipes.setText(result.toString());
+    }
+
+    private void updateRecipesStockList() {
+        StringBuilder result = new StringBuilder();
+        RecipeList filtered = recipes.filterRecipesByStock(stock);
+
+        result.append("<html>");
+        for (Recipe i : filtered.getRecipes()) {
+            result.append(i.getRecipeName() + " <br/> ");
+        }
+        result.append("</html>");
+
+        viewFilteredRecipes.setText(result.toString());
+    }
+
+    private void runStockMenu(ActionEvent e) {
     }
 
 
