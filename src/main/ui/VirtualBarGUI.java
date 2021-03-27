@@ -10,6 +10,7 @@ import persistence.JsonWriter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,6 +18,10 @@ import java.util.HashSet;
 import java.util.Scanner;
 import javax.swing.*;
 import java.util.Set;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.AudioSystem;
+
 
 public class VirtualBarGUI extends JFrame implements ActionListener {
     private static final String JSON_STORE = "./data/testReaderGeneralRecipeList.json";
@@ -24,8 +29,6 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
     private Stock stock;
     private Recipe currentRecipe = new Recipe("filler");
     private Ingredient currentIngredient = new Ingredient("filler", 1, "g");
-    private Scanner input;
-    private Scanner inputLine;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
@@ -124,8 +127,6 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
     private void initFields() {
         recipes = new RecipeList();
         stock = new Stock();
-        input = new Scanner(System.in);
-        inputLine = new Scanner(System.in);
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
     }
@@ -152,7 +153,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
 
     // EFFECTS: Creates card layout for the menu
     private void createCardLayoutMenu() {
-        c1 = new CardLayout(5,5);
+        c1 = new CardLayout(5, 5);
         menuContainer = new JPanel(c1);
         menuContainer.add(mainMenu, "main");
         menuContainer.add(recipesMenu, "recipes");
@@ -163,7 +164,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
     }
 
     private void createCardLayoutContent() {
-        c2 = new CardLayout(5,5);
+        c2 = new CardLayout(5, 5);
         contentContainer = new JPanel(c2);
         contentContainer.add(mainContent, "main panel");
         contentContainer.add(addRecipe, "add recipe");
@@ -220,7 +221,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
     // EFFECTS: Creates buttons for main menu
     private void createMainMenu() {
         mainMenu = new JPanel();
-        mainMenu.setLayout(new GridLayout(4,0));
+        mainMenu.setLayout(new GridLayout(4, 0));
         mainMenu.setSize(new Dimension(300, 600));
 
         recipesButton = new JButton("Recipes");
@@ -283,7 +284,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
     // EFFECTS: Creates graphics for stock menu
     private void createStockMenu() {
         stockMenu = new JPanel();
-        stockMenu.setLayout(new GridLayout(4,0));
+        stockMenu.setLayout(new GridLayout(4, 0));
         stockMenu.setSize(new Dimension(300, 600));
 
         addStockButton = new JButton("Add");
@@ -317,7 +318,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
 
     private void createRecipesContent() {
         addRecipePanel();
- //       editRecipePanel();
+        //       editRecipePanel();
         removeRecipePanel();
         viewRecipesPanel();
         viewFilteredPanel();
@@ -622,11 +623,13 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
             stepText.setText("");
         } else if (e.getSource() == doneRecipeButton) {
             finishAddingRecipe();
+            playSound("./data/beerOpen.wav");
         } else if (e.getSource() == removeButton) {
             recipes.removeRecipe(removeRecipeText.getText());
             removeSuccess.setText("Recipe removed successfully");
         } else if (e.getSource() == findButton) {
             viewRecipe();
+            playSound("./data/beerOpen.wav");
         } else if (e.getSource() == removeStockButton) {
             stock.removeFromStock(editStockNameText.getText());
             removeStockSuccess.setText("Ingredient removed successfully");
@@ -691,5 +694,16 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         displayRecipe.add(formattedRecipe);
     }
 
+    public void playSound(String soundName) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception ex) {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace();
+        }
+    }
 
 }
