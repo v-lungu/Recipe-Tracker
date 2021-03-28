@@ -16,14 +16,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Scanner;
 import javax.swing.*;
 import java.util.Set;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioSystem;
 
-
+// Creates GUI for Virtual Bar Program
 public class VirtualBarGUI extends JFrame implements ActionListener {
     private static final String JSON_STORE = "./data/testReaderGeneralRecipeList.json";
     private RecipeList recipes;
@@ -103,7 +102,6 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
     JTextField ingredientText = new JTextField(20);
     JTextField recipeNameText;
     JTextField amountText;
-    JTextField unitText;
     JTextField stepText;
     JTextField searchRecipeText;
     JTextField removeRecipeText;
@@ -168,6 +166,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
 
     }
 
+    // EFFECTS: Adds all content panels to a second card layout
     private void createCardLayoutContent() {
         c2 = new CardLayout(5, 5);
         contentContainer = new JPanel(c2);
@@ -212,6 +211,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         groupContentButtons();
     }
 
+    // EFFECTS: Groups all buttons not in the main menu together
     private void groupContentButtons() {
         contentButtons = new HashSet<>();
         contentButtons.add(startRecipeButton);
@@ -309,18 +309,21 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         stockMenu.add(stockBackButton);
     }
 
+    // EFFECTS: Sets up the creation of all the menu's content panels
     private void createContent() {
         createMainMenuContent();
         createRecipesContent();
         createStockContent();
     }
 
+    // EFFECTS: Creates the panel seen in the main menu
     private void createMainMenuContent() {
         mainContent = new JPanel();
         mainLabel = new JLabel("Welcome");
         mainContent.add(mainLabel);
     }
 
+    // EFFECTS: Creates all recipe content panels
     private void createRecipesContent() {
         addRecipePanel();
         //       editRecipePanel();
@@ -330,6 +333,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         viewRecipePanel();
     }
 
+    // EFFECTS: Creates the add recipe panel
     private void addRecipePanel() {
         addRecipe = new JPanel();
 
@@ -345,6 +349,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         addStepSection();
     }
 
+    // EFFECTS: Creates teh section for adding a step to the add recipe panel
     private void addStepSection() {
         addStepRecipe = new JPanel();
         addStepRecipe.setLayout(new BoxLayout(addStepRecipe, BoxLayout.Y_AXIS));
@@ -363,6 +368,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         addStepRecipe.setVisible(false);
     }
 
+    // EFFECTS: Creates the add ingredient portion of the add  recipe panel
     private void addIngredientsSection() {
         addIngredientRecipe = new JPanel();
         addIngredientRecipe.setLayout(new BoxLayout(addIngredientRecipe, BoxLayout.Y_AXIS));
@@ -378,10 +384,6 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         addIngredientRecipe.add(amount);
         amountText = new JTextField(20);
         addIngredientRecipe.add(amountText);
-      //  Label unit = new Label("Unit");
-      //  addIngredientRecipe.add(unit);
-       // unitText = new JTextField(30);
-      //  addIngredientRecipe.add(unitText);
 
         addUnitRecipe();
 
@@ -393,6 +395,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         addIngredientRecipe.setVisible(false);
     }
 
+    // Creates the radio button portion of the ingredient units
     private void addUnitRecipe() {
         JPanel unitRecipeBox = new JPanel();
         unitRecipeBox.setLayout(new BoxLayout(unitRecipeBox, BoxLayout.PAGE_AXIS));
@@ -418,6 +421,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         addIngredientRecipe.add(unitRecipeBox);
     }
 
+    // EFFECTS: Creates recipe removal panel
     private void removeRecipePanel() {
         removeRecipe = new JPanel();
 
@@ -431,6 +435,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         removeRecipe.add(removeSuccess);
     }
 
+    // EFFECTS: Creates the view recipe panel
     private void viewRecipesPanel() {
         displayAllRecipe = new JPanel();
         displayAllRecipe.setLayout(new BoxLayout(displayAllRecipe, BoxLayout.Y_AXIS));
@@ -441,6 +446,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         displayAllRecipe.add(viewRecipes);
     }
 
+    // Creates the filtered recipe panel
     private void viewFilteredPanel() {
         displayByStock = new JPanel();
         displayByStock.setLayout(new BoxLayout(displayByStock, BoxLayout.Y_AXIS));
@@ -451,6 +457,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         displayByStock.add(viewFilteredRecipes);
     }
 
+    // Creates the detailed recipe panel
     private void viewRecipePanel() {
         displayRecipe = new JPanel(new BorderLayout());
 
@@ -469,14 +476,14 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
 
     }
 
-
+    // EFFECTS: Creates the stock contents
     private void createStockContent() {
         addStockPanel();
-        //       editRecipePanel();
         editStockPanel();
         viewStockPanel();
     }
 
+    // EFFECTS: Creates the add to stock panel
     private void addStockPanel() {
         addStock = new JPanel();
         addStock.setLayout(new BoxLayout(addStock, BoxLayout.Y_AXIS));
@@ -500,6 +507,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         addStock.add(addIngredientStockButton);
     }
 
+    // EFFECTS: Creates radio button section for add to stock section
     private void addUnitStock() {
         JPanel unitBox = new JPanel();
         unitBox.setLayout(new BoxLayout(unitBox, BoxLayout.PAGE_AXIS));
@@ -525,6 +533,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         addStock.add(unitBox);
     }
 
+    // EFFECTS: Creates the edit stock section
     private void editStockPanel() {
         editStock = new JPanel();
 
@@ -538,6 +547,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         removeRecipe.add(removeStockSuccess);
     }
 
+    // // EFFECTS: Creates the view stock section
     private void viewStockPanel() {
         viewStock = new JPanel();
         viewStock.setLayout(new BoxLayout(viewStock, BoxLayout.Y_AXIS));
@@ -603,6 +613,8 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         mainLabel.setText("Content loaded");
     }
 
+    // MODIFIES: this
+    // EFFECTS: Handles the recipes menu buttons
     private void runRecipesMenu(ActionEvent e) {
         if (e.getSource() == addRecipeButton) {
             c2.show(contentContainer, "add recipe");
@@ -619,6 +631,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         }
     }
 
+    // EFFECTS: Updates the list of recipes label
     private void updateRecipeList() {
         StringBuilder result = new StringBuilder();
 
@@ -631,6 +644,8 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         viewRecipes.setText(result.toString());
     }
 
+    // MODIFIES: this
+    // EFFECTS: Updates recipes with stock filter list label
     private void updateRecipesStockList() {
         StringBuilder result = new StringBuilder();
         RecipeList filtered = recipes.filterRecipesByStock(stock);
@@ -644,6 +659,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         viewFilteredRecipes.setText(result.toString());
     }
 
+    // EFFECTS: handles the stock menu buttons
     private void runStockMenu(ActionEvent e) {
         if (e.getSource() == addStockButton) {
             c2.show(contentContainer, "add stock");
@@ -655,6 +671,8 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: Updates the stock label
     private void updateStockList() {
         StringBuilder result = new StringBuilder();
 
@@ -667,6 +685,8 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         viewStockLabel.setText(result.toString());
     }
 
+    // MODIFIES: this
+    // EFFECTS: Handles the content panel buttons
     private void runContentButtons(ActionEvent e) {
         if (e.getSource() == startRecipeButton) {
             startAddRecipe();
@@ -692,6 +712,8 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: Removes recipe from list
     private void removeRecipe() {
         if (recipes.findRecipe(removeRecipeText.getText())) {
             recipes.removeRecipe(removeRecipeText.getText());
@@ -701,12 +723,16 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: Initiates adding a recipe
     private void startAddRecipe() {
         currentRecipe = new Recipe(recipeNameText.getText());
         addIngredientRecipe.setVisible(true);
         addStepRecipe.setVisible(true);
     }
 
+    // MODIFIES: this
+    // EFFECTS: Executes adding the recipe to the list
     private void finishAddingRecipe() {
         recipes.addRecipe(currentRecipe);
         addIngredientRecipe.setVisible(false);
@@ -714,6 +740,8 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         recipeNameText.setText("");
     }
 
+    // MODIFIES: this
+    // EFFECTS: Adds ingredient to the recipe
     private void addIngredientToRecipe() {
         if (gramRecipeButton.isSelected()) {
             currentIngredient = new Ingredient(ingredientText.getText(),
@@ -729,6 +757,8 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         amountText.setText("");
     }
 
+    // MODIFIES: this
+    // EFFECTS: Adds ingredient to the stock
     private void addIngredientToStock() {
         if (gramStockButton.isSelected()) {
             currentIngredient = new Ingredient(ingredientStockText.getText(),
@@ -744,6 +774,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         amountStockText.setText("");
     }
 
+    // EFFECTS: Displays the selected recipe
     private void viewRecipe() {
         if (!recipes.findRecipe(searchRecipeText.getText())) {
             formattedRecipe.setText("The cocktail cannot be found");
@@ -773,6 +804,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         }
     }
 
+    // EFFECTS: Sets up playing a sound
     public void playSound(String soundName) {
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName));
