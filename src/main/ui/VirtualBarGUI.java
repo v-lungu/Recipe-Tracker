@@ -1,5 +1,6 @@
 package ui;
 
+import javafx.scene.control.RadioButton;
 import model.Ingredient;
 import model.Recipe;
 import model.RecipeList;
@@ -94,6 +95,11 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
     JButton addIngredientStockButton;
     private Set<JButton> contentButtons;
 
+    JRadioButton mlStockButton = new JRadioButton();
+    JRadioButton gramStockButton = new JRadioButton();
+    JRadioButton mlRecipeButton = new JRadioButton();
+    JRadioButton gramRecipeButton = new JRadioButton();
+
     JTextField ingredientText = new JTextField(20);
     JTextField recipeNameText;
     JTextField amountText;
@@ -104,7 +110,6 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
     JTextField editStockNameText;
     JTextField ingredientStockText;
     JTextField amountStockText;
-    JTextField unitStockText;
 
     JLabel mainLabel;
     JLabel viewRecipes;
@@ -373,10 +378,12 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         addIngredientRecipe.add(amount);
         amountText = new JTextField(20);
         addIngredientRecipe.add(amountText);
-        Label unit = new Label("Unit");
-        addIngredientRecipe.add(unit);
-        unitText = new JTextField(30);
-        addIngredientRecipe.add(unitText);
+      //  Label unit = new Label("Unit");
+      //  addIngredientRecipe.add(unit);
+       // unitText = new JTextField(30);
+      //  addIngredientRecipe.add(unitText);
+
+        addUnitRecipe();
 
         addIngredientButton = new JButton("Add");
         addIngredientButton.addActionListener(this);
@@ -384,6 +391,31 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
 
         addRecipe.add(addIngredientRecipe);
         addIngredientRecipe.setVisible(false);
+    }
+
+    private void addUnitRecipe() {
+        JPanel unitRecipeBox = new JPanel();
+        unitRecipeBox.setLayout(new BoxLayout(unitRecipeBox, BoxLayout.PAGE_AXIS));
+
+        JPanel gramBox = new JPanel();
+        gramRecipeButton = new JRadioButton();
+        gramBox.add(gramRecipeButton);
+        Label j3Label = new Label("grams(g)");
+        gramBox.add(j3Label);
+
+        JPanel mlBox = new JPanel();
+        mlRecipeButton = new JRadioButton();
+        mlBox.add(mlRecipeButton);
+        Label j4Label = new Label("milliliter(mL)");
+        mlBox.add(j4Label);
+
+        ButtonGroup unitRecipeGroup = new ButtonGroup();
+        unitRecipeGroup.add(gramRecipeButton);
+        unitRecipeGroup.add(mlRecipeButton);
+
+        unitRecipeBox.add(gramBox);
+        unitRecipeBox.add(mlBox);
+        addIngredientRecipe.add(unitRecipeBox);
     }
 
     private void removeRecipePanel() {
@@ -432,7 +464,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         testMenu.add(findButton);
 
         formattedRecipe = new JLabel();
-        formattedRecipe.setText("search");
+        formattedRecipe.setText("");
         displayRecipe.add(formattedRecipe, BorderLayout.CENTER);
 
     }
@@ -460,14 +492,37 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
         addStock.add(amount);
         amountStockText = new JTextField(20);
         addStock.add(amountStockText);
-        Label unit = new Label("Unit");
-        addStock.add(unit);
-        unitStockText = new JTextField(30);
-        addStock.add(unitStockText);
+
+        addUnitStock();
 
         addIngredientStockButton = new JButton("Add");
         addIngredientStockButton.addActionListener(this);
         addStock.add(addIngredientStockButton);
+    }
+
+    private void addUnitStock() {
+        JPanel unitBox = new JPanel();
+        unitBox.setLayout(new BoxLayout(unitBox, BoxLayout.PAGE_AXIS));
+
+        JPanel gramBox = new JPanel();
+        gramStockButton = new JRadioButton();
+        gramBox.add(gramStockButton);
+        Label j1Label = new Label("grams(g)");
+        gramBox.add(j1Label);
+
+        JPanel mlBox = new JPanel();
+        mlStockButton = new JRadioButton();
+        mlBox.add(mlStockButton);
+        Label j2Label = new Label("milliliter(mL)");
+        mlBox.add(j2Label);
+
+        ButtonGroup unitGroup = new ButtonGroup();
+        unitGroup.add(gramStockButton);
+        unitGroup.add(mlStockButton);
+
+        unitBox.add(gramBox);
+        unitBox.add(mlBox);
+        addStock.add(unitBox);
     }
 
     private void editStockPanel() {
@@ -625,8 +680,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
             finishAddingRecipe();
             playSound("./data/beerOpen.wav");
         } else if (e.getSource() == removeButton) {
-            recipes.removeRecipe(removeRecipeText.getText());
-            removeSuccess.setText("Recipe removed successfully");
+            removeRecipe();
         } else if (e.getSource() == findButton) {
             viewRecipe();
             playSound("./data/beerOpen.wav");
@@ -635,6 +689,15 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
             removeStockSuccess.setText("Ingredient removed successfully");
         } else if (e.getSource() == addIngredientStockButton) {
             addIngredientToStock();
+        }
+    }
+
+    private void removeRecipe() {
+        if (recipes.findRecipe(removeRecipeText.getText())) {
+            recipes.removeRecipe(removeRecipeText.getText());
+            removeSuccess.setText("Cocktail removed successfully");
+        } else {
+            removeSuccess.setText("Cocktail not found");
         }
     }
 
@@ -652,46 +715,62 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
     }
 
     private void addIngredientToRecipe() {
-        currentIngredient = new Ingredient(ingredientText.getText(), Integer.parseInt(amountText.getText()),
-                unitText.getText());
+        if (gramRecipeButton.isSelected()) {
+            currentIngredient = new Ingredient(ingredientText.getText(),
+                    Integer.parseInt(amountText.getText()),"g");
+            gramRecipeButton.setSelected(false);
+        } else if (mlStockButton.isSelected()) {
+            currentIngredient = new Ingredient(ingredientText.getText(),
+                    Integer.parseInt(amountText.getText()),"mL");
+            mlRecipeButton.setSelected(false);
+        }
         currentRecipe.addIngredient(currentIngredient);
         ingredientText.setText("");
         amountText.setText("");
-        unitText.setText("");
     }
 
     private void addIngredientToStock() {
-        currentIngredient = new Ingredient(ingredientStockText.getText(), Integer.parseInt(amountStockText.getText()),
-                unitStockText.getText());
+        if (gramStockButton.isSelected()) {
+            currentIngredient = new Ingredient(ingredientStockText.getText(),
+                    Integer.parseInt(amountStockText.getText()),"g");
+            gramStockButton.setSelected(false);
+        } else if (mlStockButton.isSelected()) {
+            currentIngredient = new Ingredient(ingredientStockText.getText(),
+                    Integer.parseInt(amountStockText.getText()),"mL");
+            mlStockButton.setSelected(false);
+        }
         stock.addToStock(currentIngredient);
         ingredientStockText.setText("");
         amountStockText.setText("");
-        unitStockText.setText("");
     }
 
     private void viewRecipe() {
-        Recipe viewRecipe = recipes.getRecipe(searchRecipeText.getText());
+        if (!recipes.findRecipe(searchRecipeText.getText())) {
+            formattedRecipe.setText("The cocktail cannot be found");
+        } else {
+            Recipe viewRecipe = recipes.getRecipe(searchRecipeText.getText());
 
-        String name = viewRecipe.getRecipeName();
-        ArrayList<Ingredient> ingredients = viewRecipe.getRecipeIngredients();
-        ArrayList<String> steps = viewRecipe.getRecipeInstructions();
+            String name = viewRecipe.getRecipeName();
+            ArrayList<Ingredient> ingredients = viewRecipe.getRecipeIngredients();
+            ArrayList<String> steps = viewRecipe.getRecipeInstructions();
 
-        StringBuilder result = new StringBuilder();
+            StringBuilder result = new StringBuilder();
 
-        result.append("<html>");
-        result.append(name + " <br/> <br/> ");
-        result.append("INGREDIENTS" + " <br/> ");
-        for (Ingredient i : ingredients) {
-            result.append(i.getIngredient() + " <br/> ");
+            result.append("<html>");
+            result.append(name + " <br/> <br/> ");
+            result.append("INGREDIENTS" + " <br/> ");
+            for (Ingredient i : ingredients) {
+                result.append(i.getIngredient() + " <br/> ");
+            }
+            result.append("<br/> STEPS" + " <br/> ");
+            for (String i : steps) {
+                result.append(i + " <br/> ");
+            }
+            result.append("</html>");
+
+            formattedRecipe.setText(result.toString());
+            displayRecipe.add(formattedRecipe);
         }
-        result.append("<br/> STEPS" + " <br/> ");
-        for (String i : steps) {
-            result.append(i + " <br/> ");
-        }
-        result.append("</html>");
-
-        formattedRecipe.setText(result.toString());
-        displayRecipe.add(formattedRecipe);
     }
 
     public void playSound(String soundName) {
