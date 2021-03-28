@@ -747,7 +747,7 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
             currentIngredient = new Ingredient(ingredientText.getText(),
                     Integer.parseInt(amountText.getText()),"g");
             gramRecipeButton.setSelected(false);
-        } else if (mlStockButton.isSelected()) {
+        } else if (mlRecipeButton.isSelected()) {
             currentIngredient = new Ingredient(ingredientText.getText(),
                     Integer.parseInt(amountText.getText()),"mL");
             mlRecipeButton.setSelected(false);
