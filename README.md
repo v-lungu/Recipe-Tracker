@@ -40,4 +40,7 @@ course.
 - Task 2: The Recipe class has been designed and tested to be robust
     - The constructor and addIngredient methods have utilized thrown exceptions 
     - All other methods are internally robust, and can handle not finding searched for items
-- Task 3: 
+- Task 3: The major change I would make to my design is to create an abstract class IngredientList that implements many
+of the duplicate functions in the Recipe and Stock classes. These two classes  share many of the same functions when it 
+comes to adding and modifying a list of ingredients. I would also try to split up my GUI file into more manageable 
+chunks. The class ended up fairly bloated and I would've liked more organization.
