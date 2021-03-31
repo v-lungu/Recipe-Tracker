@@ -4,6 +4,7 @@ import model.Ingredient;
 import model.Recipe;
 import model.RecipeList;
 import model.Stock;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -11,16 +12,34 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class JsonReaderTest extends JsonTest{
-    private Recipe recipeA = new Recipe("pina colada");
-    private Recipe recipeB = new Recipe("moscow mule");
-    private Recipe recipeC = new Recipe("whiskey sour");
-    private Recipe recipeD = new Recipe("bloody mary");
+public class JsonReaderTest extends JsonTest {
+    Recipe recipeA;
+    Recipe recipeB;
+    Recipe recipeC;
+    Recipe recipeD;
 
-    private Ingredient ingredientA = new Ingredient("cherry", 15, "mL");
-    private Ingredient ingredientB = new Ingredient("vodka", 50, "mL");
-    private Ingredient ingredientC = new Ingredient("ice", 18, "g");
-    private Ingredient ingredientD = new Ingredient("rum", 25, "mL");
+    Ingredient ingredientA;
+    Ingredient ingredientB;
+    Ingredient ingredientC;
+    Ingredient ingredientD;
+
+    @BeforeEach
+    void runBefore() {
+        try {
+            recipeA = new Recipe("pina colada");
+            recipeB = new Recipe("moscow mule");
+            recipeC = new Recipe("whiskey sour");
+            recipeD = new Recipe("bloody mary");
+
+            ingredientA = new Ingredient("cherry", 15, "mL");
+            ingredientB = new Ingredient("vodka", 50, "mL");
+            ingredientC = new Ingredient("ice", 18, "g");
+            ingredientD = new Ingredient("rum", 25, "mL");
+        } catch (Exception e) {
+            fail("nothing should fail");
+        }
+        ;
+    }
 
     @Test
     void testReaderNonExistentFile() {
@@ -50,25 +69,26 @@ public class JsonReaderTest extends JsonTest{
 
     @Test
     void testReaderGeneralRecipeList() {
-        recipeA.addIngredient(ingredientA);
-        recipeA.addIngredient(ingredientB);
-        recipeA.addInstruction("cat");
-        recipeA.addInstruction("dog");
-
-        recipeB.addIngredient(ingredientC);
-        recipeB.addInstruction("cat and dog");
-
-        recipeC.addIngredient(ingredientA);
-        recipeC.addIngredient(ingredientB);
-        recipeC.addIngredient(ingredientC);
-        recipeC.addIngredient(ingredientD);
-
-        recipeD.addInstruction("cat");
-        recipeD.addInstruction("dog");
-        recipeD.addInstruction("pineapple");
-
-        JsonReader reader = new JsonReader("./data/testReaderGeneralRecipeList.json");
         try {
+            recipeA.addIngredient(ingredientA);
+            recipeA.addIngredient(ingredientB);
+            recipeA.addInstruction("cat");
+            recipeA.addInstruction("dog");
+
+            recipeB.addIngredient(ingredientC);
+            recipeB.addInstruction("cat and dog");
+
+            recipeC.addIngredient(ingredientA);
+            recipeC.addIngredient(ingredientB);
+            recipeC.addIngredient(ingredientC);
+            recipeC.addIngredient(ingredientD);
+
+            recipeD.addInstruction("cat");
+            recipeD.addInstruction("dog");
+            recipeD.addInstruction("pineapple");
+
+            JsonReader reader = new JsonReader("./data/testReaderGeneralRecipeList.json");
+
             RecipeList rl = reader.readRecipeList();
             Stock s = reader.readStock();
 
@@ -79,7 +99,7 @@ public class JsonReaderTest extends JsonTest{
             checkRecipe(recipeB.getRecipeInstructions(), recipeB.getRecipeIngredients(), rl.getRecipes().get(1));
             checkRecipe(recipeC.getRecipeInstructions(), recipeC.getRecipeIngredients(), rl.getRecipes().get(2));
             checkRecipe(recipeD.getRecipeInstructions(), recipeD.getRecipeIngredients(), rl.getRecipes().get(3));
-        } catch (IOException e) {
+        } catch (Exception e) {
             fail("Couldn't read from file");
         }
     }
@@ -105,26 +125,26 @@ public class JsonReaderTest extends JsonTest{
 
     @Test
     void testReaderGeneral() {
-        recipeA.addIngredient(ingredientA);
-        recipeA.addIngredient(ingredientB);
-        recipeA.addInstruction("cat");
-        recipeA.addInstruction("dog");
-
-        recipeB.addIngredient(ingredientC);
-        recipeB.addInstruction("cat and dog");
-
-        recipeC.addIngredient(ingredientA);
-        recipeC.addIngredient(ingredientB);
-        recipeC.addIngredient(ingredientC);
-        recipeC.addIngredient(ingredientD);
-
-        recipeD.addInstruction("cat");
-        recipeD.addInstruction("dog");
-        recipeD.addInstruction("pineapple");
-
-        JsonReader reader = new JsonReader("./data/testReaderGeneral.json");
-
         try {
+            recipeA.addIngredient(ingredientA);
+            recipeA.addIngredient(ingredientB);
+            recipeA.addInstruction("cat");
+            recipeA.addInstruction("dog");
+
+            recipeB.addIngredient(ingredientC);
+            recipeB.addInstruction("cat and dog");
+
+            recipeC.addIngredient(ingredientA);
+            recipeC.addIngredient(ingredientB);
+            recipeC.addIngredient(ingredientC);
+            recipeC.addIngredient(ingredientD);
+
+            recipeD.addInstruction("cat");
+            recipeD.addInstruction("dog");
+            recipeD.addInstruction("pineapple");
+
+            JsonReader reader = new JsonReader("./data/testReaderGeneral.json");
+
             RecipeList rl = reader.readRecipeList();
             Stock s = reader.readStock();
 
@@ -140,7 +160,7 @@ public class JsonReaderTest extends JsonTest{
             checkIngredient(ingredientB.getName(), ingredientB.getAmount(), ingredientB.getUnit(), s.getStock().get(1));
             checkIngredient(ingredientC.getName(), ingredientC.getAmount(), ingredientC.getUnit(), s.getStock().get(2));
             checkIngredient(ingredientD.getName(), ingredientD.getAmount(), ingredientD.getUnit(), s.getStock().get(3));
-        } catch (IOException e) {
+        } catch (Exception e) {
             fail("Couldn't read from file");
         }
     }

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class RecipeTest {
     Recipe testRecipe;
+    Recipe testRecipeNoName;
 
     private Ingredient testIA = new Ingredient("vodka", 50, "mL");
     private Ingredient testIB = new Ingredient("cherry", 15, "g");
@@ -25,7 +26,11 @@ public class RecipeTest {
 
     @BeforeEach
     void runBefore() {
-        testRecipe = new Recipe("pina colada");
+        try {
+            testRecipe = new Recipe("pina colada");
+        } catch (Exception e) {
+            fail("Should make successfully");
+        }
 
         testStock.addToStock(stockIngredientA);
         testStock.addToStock(stockIngredientB);
@@ -34,15 +39,48 @@ public class RecipeTest {
     }
 
     @Test
+    void testConstructor() {
+        assertEquals("pina colada", testRecipe.getRecipeName());
+    }
+
+    @Test
+    void testConstructorNullName() {
+        try {
+            testRecipeNoName = new Recipe("");
+            fail("Did not catch empty name exception");
+        } catch (Exception e) {
+            // Test successful threw an excepction
+        }
+    }
+
+    @Test
     void testAddIngredient() {
-        assertEquals(0, testRecipe.getRecipeIngredients().size());
-        testRecipe.addIngredient(testIA);
-        assertEquals(1, testRecipe.getRecipeIngredients().size());
-        assertEquals(testIA, testRecipe.getRecipeIngredients().get(0));
+        try {
+            assertEquals(0, testRecipe.getRecipeIngredients().size());
+            testRecipe.addIngredient(testIA);
+            assertEquals(1, testRecipe.getRecipeIngredients().size());
+            assertEquals(testIA, testRecipe.getRecipeIngredients().get(0));
+        } catch (Exception e) {
+            fail("Should not throw exception");
+        }
+    }
+
+    @Test
+    void testAddDuplicateIngredient() {
+        try {
+            assertEquals(0, testRecipe.getRecipeIngredients().size());
+            testRecipe.addIngredient(testIA);
+            testRecipe.addIngredient(testIA);
+            fail("Should have thrown duplicate ingredient exception");
+        } catch (Exception e) {
+            assertEquals(1, testRecipe.getRecipeIngredients().size());
+            assertEquals(testIA, testRecipe.getRecipeIngredients().get(0));
+        }
     }
 
     @Test
     void testAddSeveralIngredient() {
+        try {
         assertEquals(0, testRecipe.getRecipeIngredients().size());
         testRecipe.addIngredient(testIA);
         testRecipe.addIngredient(testIB);
@@ -51,6 +89,26 @@ public class RecipeTest {
         assertEquals(testIA, testRecipe.getRecipeIngredients().get(0));
         assertEquals(testIB, testRecipe.getRecipeIngredients().get(1));
         assertEquals(testIC, testRecipe.getRecipeIngredients().get(2));
+        } catch (Exception e) {
+            fail("Should not throw exception");
+        }
+    }
+
+    @Test
+    void testAddSeveralDuplicateIngredient() {
+        try {
+            assertEquals(0, testRecipe.getRecipeIngredients().size());
+            testRecipe.addIngredient(testIA);
+            testRecipe.addIngredient(testIB);
+            testRecipe.addIngredient(testIC);
+            testRecipe.addIngredient(testIC);
+            fail("Exception should have been thrown");
+        } catch (Exception e) {
+            assertEquals(3, testRecipe.getRecipeIngredients().size());
+            assertEquals(testIA, testRecipe.getRecipeIngredients().get(0));
+            assertEquals(testIB, testRecipe.getRecipeIngredients().get(1));
+            assertEquals(testIC, testRecipe.getRecipeIngredients().get(2));
+        }
     }
 
     @Test
@@ -75,6 +133,7 @@ public class RecipeTest {
 
     @Test
     void removeIngredientFound() {
+        try {
         assertEquals(0, testRecipe.getRecipeIngredients().size());
         testRecipe.addIngredient(testIA);
         testRecipe.addIngredient(testIB);
@@ -82,10 +141,14 @@ public class RecipeTest {
         assertEquals(3, testRecipe.getRecipeIngredients().size());
         testRecipe.removeIngredient("cherry");
         assertEquals(2, testRecipe.getRecipeIngredients().size());
+        } catch (Exception e) {
+            fail("Should not throw exception");
+        }
     }
 
     @Test
     void removeIngredientNotFound() {
+        try {
         assertEquals(0, testRecipe.getRecipeIngredients().size());
         testRecipe.addIngredient(testIA);
         testRecipe.addIngredient(testIB);
@@ -93,10 +156,14 @@ public class RecipeTest {
         assertEquals(3, testRecipe.getRecipeIngredients().size());
         testRecipe.removeIngredient("steak");
         assertEquals(3, testRecipe.getRecipeIngredients().size());
+        } catch (Exception e) {
+            fail("Should not throw exception");
+        }
     }
 
     @Test
     void testEditIngredientFound() {
+        try {
         assertEquals(0, testRecipe.getRecipeIngredients().size());
         testRecipe.addIngredient(testIA);
         testRecipe.addIngredient(testIB);
@@ -107,10 +174,14 @@ public class RecipeTest {
         assertEquals("cherry", testRecipe.getRecipeIngredients().get(1).getName());
         assertEquals(5, testRecipe.getRecipeIngredients().get(1).getAmount());
         assertEquals("mL", testRecipe.getRecipeIngredients().get(1).getUnit());
+        } catch (Exception e) {
+            fail("Should not throw exception");
+        }
     }
 
     @Test
     void testEditIngredientNotFound() {
+        try {
         assertEquals(0, testRecipe.getRecipeIngredients().size());
         testRecipe.addIngredient(testIA);
         testRecipe.addIngredient(testIB);
@@ -121,6 +192,9 @@ public class RecipeTest {
         assertEquals(testIA, testRecipe.getRecipeIngredients().get(0));
         assertEquals(testIB, testRecipe.getRecipeIngredients().get(1));
         assertEquals(testIC, testRecipe.getRecipeIngredients().get(2));
+        } catch (Exception e) {
+            fail("Should not throw exception");
+        }
     }
 
     @Test
@@ -151,20 +225,28 @@ public class RecipeTest {
 
     @Test
     void testIngredientsAllInStock() {
+        try {
         testRecipe.addIngredient(testIA);
         testRecipe.addIngredient(testIB);
         testRecipe.addIngredient(testIC);
         assertTrue(testRecipe.ingredientsInStock(testStock));
+        } catch (Exception e) {
+            fail("Should not throw exception");
+        }
 
     }
 
     @Test
     void testIngredientsNotAllInStock() {
+        try {
         testRecipe.addIngredient(testIA);
         testRecipe.addIngredient(testIB);
         testRecipe.addIngredient(testIC);
         testRecipe.addIngredient(testID);
         assertFalse(testRecipe.ingredientsInStock(testStock));
+        } catch (Exception e) {
+            fail("Should not throw exception");
+        }
 
     }
 }

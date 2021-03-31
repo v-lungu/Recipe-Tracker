@@ -8,23 +8,38 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ListOfRecipeTest {
     private RecipeList testRecipeList;
 
-    private Recipe recipeA = new Recipe("pina colada");
-    private Recipe recipeB = new Recipe("moscow mule");
-    private Recipe recipeC = new Recipe("whiskey sour");
-    private Recipe recipeD = new Recipe("bloody mary");
+    private Recipe recipeA;
+    private Recipe recipeB;
+    private Recipe recipeC;
+    private Recipe recipeD;
 
-    private Ingredient ingredientA = new Ingredient("cherry", 15, "mL");
-    private Ingredient ingredientB = new Ingredient("vodka", 50, "mL");
-    private Ingredient ingredientC = new Ingredient("ice", 18, "g");
+    private Ingredient ingredientA;
+    private Ingredient ingredientB;
+    private Ingredient ingredientC;
 
-    private Stock testStock = new Stock();
+    private Stock testStock;
 
     @BeforeEach
     void runBefore() {
-        testRecipeList = new RecipeList();
-        testRecipeList.addRecipe(recipeA);
-        testRecipeList.addRecipe(recipeB);
-        testRecipeList.addRecipe(recipeC);
+        try {
+            recipeA = new Recipe("pina colada");
+            recipeB = new Recipe("moscow mule");
+            recipeC = new Recipe("whiskey sour");
+            recipeD = new Recipe("bloody mary");
+
+            ingredientA = new Ingredient("cherry", 15, "mL");
+            ingredientB = new Ingredient("vodka", 50, "mL");
+            ingredientC = new Ingredient("ice", 18, "g");
+
+            testStock = new Stock();
+
+            testRecipeList = new RecipeList();
+            testRecipeList.addRecipe(recipeA);
+            testRecipeList.addRecipe(recipeB);
+            testRecipeList.addRecipe(recipeC);
+        } catch (Exception e) {
+            fail("nothing should fail");
+        }
     }
 
     @Test
@@ -75,20 +90,24 @@ public class ListOfRecipeTest {
 
     @Test
     void testFilterByStock() {
-        testStock.addToStock(ingredientA);
-        testStock.addToStock(ingredientC);
+        try {
+            testStock.addToStock(ingredientA);
+            testStock.addToStock(ingredientC);
 
-        recipeA.addIngredient(ingredientA);
-        recipeA.addIngredient(ingredientB);
-        recipeA.addIngredient(ingredientC);
+            recipeA.addIngredient(ingredientA);
+            recipeA.addIngredient(ingredientB);
+            recipeA.addIngredient(ingredientC);
 
-        recipeB.addIngredient(ingredientA);
+            recipeB.addIngredient(ingredientA);
 
-        recipeC.addIngredient(ingredientC);
-        recipeC.addIngredient(ingredientA);
+            recipeC.addIngredient(ingredientC);
+            recipeC.addIngredient(ingredientA);
 
-        RecipeList filtered = testRecipeList.filterRecipesByStock(testStock);
+            RecipeList filtered = testRecipeList.filterRecipesByStock(testStock);
 
-        assertEquals(2, filtered.getRecipes().size());
+            assertEquals(2, filtered.getRecipes().size());
+        } catch (Exception e) {
+            fail("Exception should not have been thrown");
+        }
     }
 }

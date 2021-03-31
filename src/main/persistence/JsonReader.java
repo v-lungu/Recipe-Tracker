@@ -80,18 +80,22 @@ public class JsonReader {
         JSONArray jsonArrayI = jsonObject.getJSONArray("recipe-ingredients");
         JSONArray jsonArrayS = jsonObject.getJSONArray("steps");
         String name = jsonObject.getString("name");
-        Recipe recipe = new Recipe(name);
+        try {
+            Recipe recipe = new Recipe(name);
 
-        for (Object json : jsonArrayI) {
-            JSONObject nextIngredient = (JSONObject) json;
-            addIngredient(recipe, nextIngredient);
+            for (Object json : jsonArrayI) {
+                JSONObject nextIngredient = (JSONObject) json;
+                addIngredient(recipe, nextIngredient);
+            }
+
+            for (Object json : jsonArrayS) {
+                recipe.addInstruction(json.toString());
+            }
+
+            rl.addRecipe(recipe);
+        } catch (Exception e) {
+            // Nothing needs to be done
         }
-
-        for (Object json : jsonArrayS) {
-            recipe.addInstruction(json.toString());
-        }
-
-        rl.addRecipe(recipe);
     }
 
     // MODIFIES: rl
@@ -102,7 +106,11 @@ public class JsonReader {
         String unit = jsonObject.getString("unit");
 
         Ingredient ingredient = new Ingredient(name, amount, unit);
-        r.addIngredient(ingredient);
+        try {
+            r.addIngredient(ingredient);
+        } catch (Exception e) {
+            System.out.println("Should not happen");
+        }
     }
 
     // MODIFIES: s

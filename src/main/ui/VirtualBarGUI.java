@@ -24,10 +24,10 @@ import javax.sound.sampled.AudioSystem;
 
 // Creates GUI for Virtual Bar Program
 public class VirtualBarGUI extends JFrame implements ActionListener {
-    private static final String JSON_STORE = "./data/testReaderGeneralRecipeList.json";
+    private static final String JSON_STORE = "./data/bar.json";
     private RecipeList recipes;
     private Stock stock;
-    private Recipe currentRecipe = new Recipe("filler");
+    private Recipe currentRecipe;
     private Ingredient currentIngredient = new Ingredient("filler", 1, "g");
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
@@ -726,9 +726,13 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
     // MODIFIES: this
     // EFFECTS: Initiates adding a recipe
     private void startAddRecipe() {
-        currentRecipe = new Recipe(recipeNameText.getText());
-        addIngredientRecipe.setVisible(true);
-        addStepRecipe.setVisible(true);
+        try {
+            currentRecipe = new Recipe(recipeNameText.getText());
+            addIngredientRecipe.setVisible(true);
+            addStepRecipe.setVisible(true);
+        } catch (Exception e) {
+            System.out.println("Could not complete");
+        }
     }
 
     // MODIFIES: this
@@ -752,7 +756,11 @@ public class VirtualBarGUI extends JFrame implements ActionListener {
                     Integer.parseInt(amountText.getText()),"mL");
             mlRecipeButton.setSelected(false);
         }
-        currentRecipe.addIngredient(currentIngredient);
+        try {
+            currentRecipe.addIngredient(currentIngredient);
+        } catch (Exception e) {
+            System.out.println("Add failed");
+        }
         ingredientText.setText("");
         amountText.setText("");
     }

@@ -35,3 +35,9 @@ course.
 ### Part 2:
 - I want to be able to save my recipes and stock
 - I want to be able to load my recipes and stock from file 
+
+### Part 4:
+- Task 2: The Recipe class has been designed and tested to be robust
+    - The constructor and addIngredient methods have utilized thrown exceptions 
+    - All other methods are internally robust, and can handle not finding searched for items
+- Task 3: 

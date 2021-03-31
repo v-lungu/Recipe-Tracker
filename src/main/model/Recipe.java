@@ -1,5 +1,7 @@
 package model;
 
+import exception.DuplicateIngredientException;
+import exception.NullNameException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
@@ -14,10 +16,12 @@ public class Recipe implements Writable {
     private ArrayList<String> instructions;
 
     /*
-     * REQUIRES: Non-empty name
      * EFFECTS: Creates a new cocktail recipe with a list for ingredients and a list of instructions
      */
-    public Recipe(String name) {
+    public Recipe(String name) throws NullNameException {
+        if (name.equals("")) {
+            throw new NullNameException("This recipe needs a name");
+        }
         cocktail = name;
         ingredientList = new ArrayList<>();
         instructions = new ArrayList<>();
@@ -45,11 +49,13 @@ public class Recipe implements Writable {
     }
 
     /*
-     * REQUIRES: Ingredient has not been previously added to the list
      * MODIFIES: this
      * EFFECTS: Adds a new ingredient to the recipe
      */
-    public void addIngredient(Ingredient i) {
+    public void addIngredient(Ingredient i) throws DuplicateIngredientException {
+        if (getRecipeIngredients().contains(i)) {
+            throw new DuplicateIngredientException("This ingredient already exists in the recipe");
+        }
         ingredientList.add(i);
     }
 
