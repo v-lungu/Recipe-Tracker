@@ -28,7 +28,7 @@ public class JsonWriter {
     }
 
     // MODIFIES: this
-    // EFFECTS: writes JSON representation of RecipeList and Stock to file
+    // EFFECTS: writes JSON representation of RecipeList and Stock  to file
     public void write(RecipeList rl, Stock s) {
         JSONObject json = new JSONObject();
         json.put("recipe-list", rl.toJson());
