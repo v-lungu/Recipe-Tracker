@@ -20,7 +20,7 @@ course.
 #### Functional Features
 - Recipe list 
 - Stock and inventory 
-- Editing capabilities 
+- Editing capability
 
 ## User Stories
 
