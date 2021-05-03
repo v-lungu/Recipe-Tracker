@@ -24,7 +24,6 @@ course.
 
 ## User Stories
 
-### Part 1: 
 - I want to be able to add new drink recipes
 - I want to view all my recipes filtered for what I have in stock
 - I want to be able to see a recipe in detail
@@ -32,15 +31,5 @@ course.
 - I want to be able to see an inventory of all ingredients I have at home
 - I want to be able to edit my home inventory 
 
-### Part 2:
 - I want to be able to save my recipes and stock
 - I want to be able to load my recipes and stock from file 
-
-### Part 4:
-- Task 2: The Recipe class has been designed and tested to be robust
-    - The constructor and addIngredient methods have utilized thrown exceptions 
-    - All other methods are internally robust, and can handle not finding searched for items
-- Task 3: The major change I would make to my design is to create an abstract class IngredientList that implements many
-of the duplicate functions in the Recipe and Stock classes. These two classes  share many of the same functions when it 
-comes to adding and modifying a list of ingredients. I would also try to split up my GUI file into more manageable 
-chunks. The class ended up fairly bloated and I would've liked more organization.
